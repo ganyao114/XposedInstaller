@@ -10,11 +10,14 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.graphics.drawable.Drawable;
 import android.os.FileUtils;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -34,7 +37,7 @@ public final class ModuleUtil {
     public static int MIN_MODULE_VERSION = 2; // reject modules with
     private static ModuleUtil mInstance = null;
     private final XposedApp mApp;
-    private final PackageManager mPm;
+    private static PackageManager mPm;
     private final String mFrameworkPackageName;
     private final List<ModuleListener> mListeners = new CopyOnWriteArrayList<ModuleListener>();
     private SharedPreferences mPref;
@@ -265,7 +268,7 @@ public final class ModuleUtil {
         void onInstalledModulesReloaded(ModuleUtil moduleUtil);
     }
 
-    public class InstalledModule {
+    public static class InstalledModule implements Parcelable {
         private static final int FLAG_FORWARD_LOCK = 1 << 29;
         public final String packageName;
         public final boolean isFramework;
@@ -299,6 +302,29 @@ public final class ModuleUtil {
                 }
             }
         }
+
+        protected InstalledModule(Parcel in) {
+            packageName = in.readString();
+            isFramework = in.readByte() != 0;
+            versionName = in.readString();
+            versionCode = in.readInt();
+            minVersion = in.readInt();
+            app = in.readParcelable(ApplicationInfo.class.getClassLoader());
+            appName = in.readString();
+            description = in.readString();
+        }
+
+        public static final Creator<InstalledModule> CREATOR = new Creator<InstalledModule>() {
+            @Override
+            public InstalledModule createFromParcel(Parcel in) {
+                return new InstalledModule(in);
+            }
+
+            @Override
+            public InstalledModule[] newArray(int size) {
+                return new InstalledModule[size];
+            }
+        };
 
         public boolean isInstalledOnExternalStorage() {
             return (app.flags & ApplicationInfo.FLAG_EXTERNAL_STORAGE) != 0;
@@ -362,6 +388,23 @@ public final class ModuleUtil {
         @Override
         public String toString() {
             return getAppName();
+        }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(packageName);
+            dest.writeByte((byte) (isFramework ? 1 : 0));
+            dest.writeString(versionName);
+            dest.writeInt(versionCode);
+            dest.writeInt(minVersion);
+            dest.writeParcelable(app, flags);
+            dest.writeString(appName);
+            dest.writeString(description);
         }
     }
 }

@@ -87,12 +87,12 @@ public final class InstallZipUtil {
     }
 
     public static class XposedProp {
-        private String mVersion = null;
-        private int mVersionInt = 0;
-        private String mArch = null;
-        private int mMinSdk = 0;
-        private int mMaxSdk = 0;
-        private Set<String> mRequires = new HashSet<>();
+        public String mVersion = null;
+        public int mVersionInt = 0;
+        public String mArch = null;
+        public int mMinSdk = 0;
+        public int mMaxSdk = 0;
+        public Set<String> mRequires = new HashSet<>();
 
         private boolean isComplete() {
             return mVersion != null

@@ -394,7 +394,7 @@ public final class FrameworkZips {
     }
 
     @SuppressWarnings("deprecation")
-    private static String getArch() {
+    public static String getArch() {
         if (Build.CPU_ABI.equals("arm64-v8a")) {
             return "arm64";
         } else if (Build.CPU_ABI.equals("x86_64")) {

@@ -100,6 +100,12 @@
                 android:resource="@xml/file_paths"/>
         </provider>
 
+        <provider
+            android:authorities="de.robv.android.xposed.installer"
+            android:name="com.trend.lazyinject.lib.ipc.InjectIPCProvider"
+            android:exported="false"
+            android:process="de.robv.android.xposed.installer" />
+
     </application>
 
 </manifest>

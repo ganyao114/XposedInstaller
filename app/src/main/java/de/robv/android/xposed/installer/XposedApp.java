@@ -17,6 +17,9 @@ import android.preference.PreferenceManager;
 import android.support.v4.content.FileProvider;
 import android.util.Log;
 
+import com.swift.sandxposed.installer.sandxposed.SandXposed;
+import com.trend.lazyinject.lib.LazyInject;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -51,7 +54,7 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
     private static Handler mMainHandler;
     private boolean mIsUiLoaded = false;
     private SharedPreferences mPref;
-    private XposedProp mXposedProp;
+    public XposedProp mXposedProp;
 
     public static XposedApp getInstance() {
         return mInstance;
@@ -115,12 +118,15 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
         mMainHandler = new Handler();
 
         mPref = PreferenceManager.getDefaultSharedPreferences(this);
-        reloadXposedProp();
         createDirectories();
         NotificationUtil.init();
         AssetUtil.removeBusybox();
 
         registerActivityLifecycleCallbacks(this);
+
+        LazyInject.init(this);
+        SandXposed.initForXposedInstaller(this);
+        reloadXposedProp();
     }
 
     private void createDirectories() {

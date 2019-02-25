@@ -1,11 +1,21 @@
 apply plugin: 'com.android.application'
+apply plugin: 'lazyinject'
+
+lazyinject {
+    //是否开启注入
+    enable true
+    //启用编译期间类型匹配，可以减少运行期间反射，建议开启
+    optimize true
+    //包名数组，过滤需要注入的包，加快编译
+    includes 'sandxposed', 'xposed'
+}
 
 android {
     compileSdkVersion 27
 
     defaultConfig {
         applicationId "de.robv.android.xposed.installer"
-        minSdkVersion 15
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 43
         versionName "3.1.5"
@@ -33,5 +43,9 @@ dependencies {
     implementation 'eu.chainfire:libsuperuser:1.0.0.201608240809'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.1'
+    implementation 'com.swift.sandhook:hooklib:2.9.0'
+    implementation 'com.swift.sandhook:xposedcompat:2.9.0'
+    annotationProcessor 'com.trend.lazyinject:compiler:3.4.0-beta'
+    compileOnly project(':module')
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])
 }
