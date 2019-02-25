@@ -24,10 +24,11 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
         debug {
+            minifyEnabled false
             pseudoLocalesEnabled true
         }
     }
@@ -43,8 +44,8 @@ dependencies {
     implementation 'eu.chainfire:libsuperuser:1.0.0.201608240809'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'de.psdev.licensesdialog:licensesdialog:1.8.1'
-    implementation 'com.swift.sandhook:hooklib:2.9.0'
-    implementation 'com.swift.sandhook:xposedcompat:2.9.0'
+    implementation 'com.swift.sandhook:hooklib:2.9.1'
+    implementation 'com.swift.sandhook:xposedcompat:2.9.1'
     annotationProcessor 'com.trend.lazyinject:compiler:3.4.0-beta'
     compileOnly project(':module')
     compileOnly fileTree(dir: 'libs', include: ['*.jar'])

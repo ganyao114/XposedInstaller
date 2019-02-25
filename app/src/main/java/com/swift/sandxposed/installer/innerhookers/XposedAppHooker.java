@@ -2,7 +2,6 @@ package com.swift.sandxposed.installer.innerhookers;
 
 import android.os.Build;
 
-import com.swift.sandhook.SandHook;
 import com.swift.sandhook.annotation.HookClass;
 import com.swift.sandhook.annotation.HookMethod;
 import com.swift.sandhook.annotation.ThisObject;
@@ -16,6 +15,11 @@ public class XposedAppHooker {
 
     @HookMethod("getInstalledXposedVersion")
     public static int hookXposedVersion() {
+        return 99;
+    }
+
+    @HookMethod("getActiveXposedVersion")
+    public static int hookXposedActiveVersion() {
         return 99;
     }
 

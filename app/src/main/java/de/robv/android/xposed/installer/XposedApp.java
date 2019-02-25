@@ -74,6 +74,7 @@ public class XposedApp extends Application implements ActivityLifecycleCallbacks
 
     // This method is hooked by XposedBridge to return the current version
     public static int getActiveXposedVersion() {
+        XposedProp prop = getXposedProp();
         return -1;
     }
 
